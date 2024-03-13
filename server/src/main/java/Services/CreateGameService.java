@@ -41,12 +41,12 @@ public class CreateGameService {
                 return createGameResult;
             }
 
-            String gameID;
+            int gameID;
             if (gameDAO.FindAll() != null) {
-                gameID = Integer.toString(gameDAO.FindAll().size() + 1);
+                gameID = gameDAO.FindAll().size() + 1;
             }
             else {
-                gameID = "1";
+                gameID = 1;
             }
             gameDAO.Insert(gameID, new Game(), createGameRequest.getGameName());
             //db.closeConnection(db.getConnection());

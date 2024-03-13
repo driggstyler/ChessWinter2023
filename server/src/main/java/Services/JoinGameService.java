@@ -36,14 +36,14 @@ public class JoinGameService {
                 //db.closeConnection(db.getConnection());
                 return joinGameResult;
             }
-            if (gameDAO.Find(String.valueOf(joinGameRequest.getGameID())) == null) {
+            if (gameDAO.Find(joinGameRequest.getGameID()) == null) {
                 joinGameResult.setSuccess(false);
                 joinGameResult.setMessage("Error: Bad request.");
                 //db.closeConnection(db.getConnection());
                 return joinGameResult;
             }
             if (joinGameRequest.getPlayerColor() != null) {
-                boolean claimedSpot = gameDAO.claimSpot(String.valueOf(joinGameRequest.getGameID()), joinGameRequest.getPlayerColor(), authtokenDAO.Find(authtoken).getUsername());
+                boolean claimedSpot = gameDAO.claimSpot(joinGameRequest.getGameID(), joinGameRequest.getPlayerColor(), authtokenDAO.Find(authtoken).getUsername());
                 if (!claimedSpot) {
                     joinGameResult.setSuccess(false);
                     joinGameResult.setMessage("Error: Already taken.");

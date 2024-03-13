@@ -41,7 +41,7 @@ public class GameDAO {
      * @return True if the spot was claimed, false if the spot was not able to be claimed.
      * @throws DataAccessException
      */
-    public boolean claimSpot(String gameID, String teamColor, String username) throws DataAccessException {
+    public boolean claimSpot(int gameID, String teamColor, String username) throws DataAccessException {
         Game game = Find(gameID);
         if (game == null) {
             return false;
@@ -50,8 +50,10 @@ public class GameDAO {
             game.setWhiteUsername(username);
             Gson gson = new Gson();
             String json = gson.toJson(game);
-            String sql = "UPDATE games SET game = " + json + " WHERE id = " + gameID;
+            String sql = "UPDATE games SET game = ? WHERE id = ?";
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, json);
+                stmt.setInt(2, gameID);
                 stmt.executeUpdate();
             }
             catch (SQLException e) {
@@ -64,8 +66,10 @@ public class GameDAO {
             game.setBlackUsername(username);
             Gson gson = new Gson();
             String json = gson.toJson(game);
-            String sql = "UPDATE games SET game = " + json + " WHERE id = " + gameID;
+            String sql = "UPDATE games SET game = ? WHERE id = ?";
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, json);
+                stmt.setInt(2, gameID);
                 stmt.executeUpdate();
             }
             catch (SQLException e) {
@@ -84,16 +88,15 @@ public class GameDAO {
      * @param gameName The name of the new game to insert.
      * @throws DataAccessException
      */
-    public void Insert(String gameID, Game game, String gameName) throws DataAccessException {
+    public void Insert(int gameID, Game game, String gameName) throws DataAccessException {
         game.setGameName(gameName);
-        game.setGameID(Integer.parseInt(gameID));
+        game.setGameID(gameID);
         //        database.put(gameID, game);
         String sql = "INSERT INTO games (gameID, gameName, game) VALUES(?,?,?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            //FIXME Insert actual game with Gson adapter class
             Gson gson = new Gson();
             String json = gson.toJson(game);
-            stmt.setString(1, gameID);
+            stmt.setInt(1, gameID);
             stmt.setString(2, gameName);
             stmt.setString(3, json);
             stmt.executeUpdate();
@@ -110,20 +113,21 @@ public class GameDAO {
      * @return The game corresponding to the given gameID, or null if the game is not in the database.
      * @throws DataAccessException
      */
-    public Game Find(String gameID) throws DataAccessException{
+    public Game Find(int gameID) throws DataAccessException{
         //return database.get(gameID);
         Game game;
         ResultSet rs;
         String sql = "SELECT * FROM games WHERE gameID = ?;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, gameID);
+            stmt.setInt(1, gameID);
             rs = stmt.executeQuery();
             if (rs.next()) {
                 String json = rs.getString("game");
-                GsonBuilder builder = new GsonBuilder();
-                builder.registerTypeAdapter(Game.class, new GameAdapter());
-                game = builder.create().fromJson(json, Game.class);
-                return game;
+                //GsonBuilder builder = new GsonBuilder();
+                //builder.registerTypeAdapter(Game.class, new GameAdapter());
+                //game = builder.create().fromJson(json, Game.class);
+                Gson gson = new Gson();
+                return gson.fromJson(json, Game.class);
             } else {
                 return null;
             }
@@ -153,9 +157,9 @@ public class GameDAO {
             while (rs.next()) {
                 System.out.println(i++);
                 String json = rs.getString("game");
-                GsonBuilder builder = new GsonBuilder();
-                builder.registerTypeAdapter(Game.class, new GameAdapter());
-                Game game = builder.create().fromJson(json, Game.class);
+//                GsonBuilder builder = new GsonBuilder();
+//                builder.registerTypeAdapter(Game.class, new GameAdapter());
+                Game game = new Gson().fromJson(json, Game.class);
                 games.add(game);
             }
             if (games.isEmpty()) {

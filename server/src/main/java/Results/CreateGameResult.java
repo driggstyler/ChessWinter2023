@@ -1,7 +1,7 @@
 package Results;
 
 public class CreateGameResult {
-    private String gameID;
+    private int gameID;
     private String message;
 
     public boolean isSuccess() {
@@ -14,11 +14,11 @@ public class CreateGameResult {
 
     private boolean success;
 
-    public String getGameID() {
+    public int getGameID() {
         return gameID;
     }
 
-    public void setGameID(String gameID) {
+    public void setGameID(Integer gameID) {
         this.gameID = gameID;
     }
 
