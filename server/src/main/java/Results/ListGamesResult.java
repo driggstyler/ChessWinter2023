@@ -1,19 +1,20 @@
 package Results;
 
+import Models.Game;
 import chess.ChessGame;
 
 import java.util.ArrayList;
 
 public class ListGamesResult {
-    private ArrayList<ChessGame> games;
+    private ArrayList<Game> games;
     private String message;
     private boolean success;
 
-    public ArrayList<ChessGame> getGames() {
+    public ArrayList<Game> getGames() {
         return games;
     }
 
-    public void setGames(ArrayList<ChessGame> games) {
+    public void setGames(ArrayList<Game> games) {
         this.games = games;
     }
 

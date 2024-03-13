@@ -26,7 +26,7 @@ public class CreateGameService {
      */
     public CreateGameResult Execute(CreateGameRequest createGameRequest, String authtoken) {
         CreateGameResult createGameResult = new CreateGameResult();
-        DatabaseManager db = new DatabaseManager();
+        //DatabaseManager db = new DatabaseManager();
         try (Connection conn = DatabaseManager.getConnection()){
             AuthtokenDAO authtokenDAO = new AuthtokenDAO(conn);
             GameDAO gameDAO = new GameDAO(conn);
@@ -48,7 +48,7 @@ public class CreateGameService {
             else {
                 gameID = "1";
             }
-            gameDAO.Insert(gameID, new ChessGame(), createGameRequest.getGameName());
+            gameDAO.Insert(gameID, new Game(), createGameRequest.getGameName());
             //db.closeConnection(db.getConnection());
             createGameResult.setGameID(gameID);
             createGameResult.setSuccess(true);

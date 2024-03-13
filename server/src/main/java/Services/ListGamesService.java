@@ -3,6 +3,7 @@ package Services;
 import DAO.AuthtokenDAO;
 import DAO.GameDAO;
 import DAO.UserDAO;
+import Models.Game;
 import Results.ListGamesResult;
 import chess.ChessGame;
 import dataAccess.DataAccessException;
@@ -32,7 +33,7 @@ public class ListGamesService {
                 listGamesResult.setMessage("Error: Unauthorized");
                 return listGamesResult;
             }
-            ArrayList<ChessGame> games = gameDAO.FindAll();
+            ArrayList<Game> games = gameDAO.FindAll();
             //db.closeConnection(db.getConnection());
             listGamesResult.setGames(games);
             listGamesResult.setMessage("Listed games successfully.");

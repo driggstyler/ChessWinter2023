@@ -1,6 +1,7 @@
 package DAO;
 
 import Models.Authtoken;
+import Models.Game;
 import chess.ChessGame;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -41,7 +42,7 @@ public class GameDAO {
      * @throws DataAccessException
      */
     public boolean claimSpot(String gameID, String teamColor, String username) throws DataAccessException {
-        ChessGame game = Find(gameID);
+        Game game = Find(gameID);
         if (game == null) {
             return false;
         }
@@ -83,7 +84,7 @@ public class GameDAO {
      * @param gameName The name of the new game to insert.
      * @throws DataAccessException
      */
-    public void Insert(String gameID, ChessGame game, String gameName) throws DataAccessException {
+    public void Insert(String gameID, Game game, String gameName) throws DataAccessException {
         game.setGameName(gameName);
         game.setGameID(Integer.parseInt(gameID));
         //        database.put(gameID, game);
@@ -109,9 +110,9 @@ public class GameDAO {
      * @return The game corresponding to the given gameID, or null if the game is not in the database.
      * @throws DataAccessException
      */
-    public ChessGame Find(String gameID) throws DataAccessException{
+    public Game Find(String gameID) throws DataAccessException{
         //return database.get(gameID);
-        ChessGame game;
+        Game game;
         ResultSet rs;
         String sql = "SELECT * FROM games WHERE gameID = ?;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -120,8 +121,8 @@ public class GameDAO {
             if (rs.next()) {
                 String json = rs.getString("game");
                 GsonBuilder builder = new GsonBuilder();
-                builder.registerTypeAdapter(ChessGame.class, new GameAdapter());
-                game = builder.create().fromJson(json, ChessGame.class);
+                builder.registerTypeAdapter(Game.class, new GameAdapter());
+                game = builder.create().fromJson(json, Game.class);
                 return game;
             } else {
                 return null;
@@ -137,13 +138,13 @@ public class GameDAO {
      * @return All games int the database in an ArrayList.
      * @throws DataAccessException
      */
-    public ArrayList<ChessGame> FindAll() throws DataAccessException{
+    public ArrayList<Game> FindAll() throws DataAccessException{
         //        ArrayList<ChessGame> games = new ArrayList<>();
         //        for (String element : database.keySet()) {
         //            games.add(database.get(element));
         //        }
         //        return games;
-        ArrayList<ChessGame> games = new ArrayList<>();
+        ArrayList<Game> games = new ArrayList<>();
         ResultSet rs;
         String sql = "SELECT game FROM games;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -153,8 +154,8 @@ public class GameDAO {
                 System.out.println(i++);
                 String json = rs.getString("game");
                 GsonBuilder builder = new GsonBuilder();
-                builder.registerTypeAdapter(ChessGame.class, new GameAdapter());
-                ChessGame game = builder.create().fromJson(json, ChessGame.class);
+                builder.registerTypeAdapter(Game.class, new GameAdapter());
+                Game game = builder.create().fromJson(json, Game.class);
                 games.add(game);
             }
             if (games.isEmpty()) {
