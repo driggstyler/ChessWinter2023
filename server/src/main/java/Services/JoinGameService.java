@@ -8,7 +8,8 @@ import Requests.JoinGameRequest;
 import Results.JoinGameResult;
 import chess.ChessGame;
 import dataAccess.DataAccessException;
-import dataAccess.Database;
+//import dataAccess.Database;
+import dataAccess.DatabaseManager;
 
 /**
  * A service to handle the logic for the join game operation.
@@ -22,7 +23,7 @@ public class JoinGameService {
      */
     public JoinGameResult Execute(JoinGameRequest joinGameRequest, String authtoken){
         JoinGameResult joinGameResult = new JoinGameResult();
-        Database db = new Database();
+        DatabaseManager db = new DatabaseManager();
         try {
             AuthtokenDAO authtokenDAO = new AuthtokenDAO(db.getConnection());
             GameDAO gameDAO = new GameDAO(db.getConnection());

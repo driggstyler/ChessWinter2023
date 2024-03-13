@@ -5,7 +5,7 @@ import DAO.GameDAO;
 import DAO.UserDAO;
 import Results.ClearResult;
 import dataAccess.DataAccessException;
-import dataAccess.Database;
+import dataAccess.DatabaseManager;
 
 /**
  * A service to handle the logic for the clear operation.
@@ -17,7 +17,7 @@ public class ClearService {
      */
     public ClearResult Execute() {
         ClearResult clearResult = new ClearResult();
-        Database db = new Database();
+        DatabaseManager db = new DatabaseManager();
         try {
             AuthtokenDAO authtokenDAO = new AuthtokenDAO(db.getConnection());
             GameDAO gameDAO = new GameDAO(db.getConnection());
