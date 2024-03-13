@@ -6,8 +6,10 @@ import DAO.UserDAO;
 import Results.ListGamesResult;
 import chess.ChessGame;
 import dataAccess.DataAccessException;
-import dataAccess.Database;
+import dataAccess.DatabaseManager;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -21,20 +23,20 @@ public class ListGamesService {
      */
     public ListGamesResult Execute(String authtoken){
         ListGamesResult listGamesResult = new ListGamesResult();
-        Database db = new Database();
-        try {
-            AuthtokenDAO authtokenDAO = new AuthtokenDAO(db.getConnection());
-            GameDAO gameDAO = new GameDAO(db.getConnection());
+        //Database db = new Database();
+        try (Connection conn = DatabaseManager.getConnection()){
+            AuthtokenDAO authtokenDAO = new AuthtokenDAO(conn);
+            GameDAO gameDAO = new GameDAO(conn);
             if (authtokenDAO.Find(authtoken) == null) {
                 listGamesResult.setSuccess(false);
                 listGamesResult.setMessage("Error: Unauthorized");
                 return listGamesResult;
             }
             ArrayList<ChessGame> games = gameDAO.FindAll();
-            db.closeConnection(db.getConnection());
+            //db.closeConnection(db.getConnection());
             listGamesResult.setGames(games);
             listGamesResult.setMessage("Listed games successfully.");
-        } catch (DataAccessException e) {
+        } catch (DataAccessException | SQLException e) {
             e.printStackTrace();
             listGamesResult.setMessage("Error in listing games.");
         }

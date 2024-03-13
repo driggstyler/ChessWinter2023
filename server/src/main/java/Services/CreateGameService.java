@@ -8,7 +8,10 @@ import Requests.CreateGameRequest;
 import Results.CreateGameResult;
 import chess.ChessGame;
 import dataAccess.DataAccessException;
-import dataAccess.Database;
+import dataAccess.DatabaseManager;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 //import mainChess.Game;
 
 /**
@@ -23,10 +26,10 @@ public class CreateGameService {
      */
     public CreateGameResult Execute(CreateGameRequest createGameRequest, String authtoken) {
         CreateGameResult createGameResult = new CreateGameResult();
-        Database db = new Database();
-        try {
-            AuthtokenDAO authtokenDAO = new AuthtokenDAO(db.getConnection());
-            GameDAO gameDAO = new GameDAO(db.getConnection());
+        DatabaseManager db = new DatabaseManager();
+        try (Connection conn = DatabaseManager.getConnection()){
+            AuthtokenDAO authtokenDAO = new AuthtokenDAO(conn);
+            GameDAO gameDAO = new GameDAO(conn);
             if (authtokenDAO.Find(authtoken) == null) {
                 createGameResult.setSuccess(false);
                 createGameResult.setMessage("Error: Unauthorized");
@@ -46,11 +49,11 @@ public class CreateGameService {
                 gameID = "1";
             }
             gameDAO.Insert(gameID, new ChessGame(), createGameRequest.getGameName());
-            db.closeConnection(db.getConnection());
+            //db.closeConnection(db.getConnection());
             createGameResult.setGameID(gameID);
             createGameResult.setSuccess(true);
             createGameResult.setMessage("Successfully created a new game.");
-        } catch (DataAccessException e) {
+        } catch (DataAccessException | SQLException e) {
             e.printStackTrace();
             createGameResult.setGameID(null);
             createGameResult.setSuccess(false);

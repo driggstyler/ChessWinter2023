@@ -11,6 +11,9 @@ import dataAccess.DataAccessException;
 //import dataAccess.Database;
 import dataAccess.DatabaseManager;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 /**
  * A service to handle the logic for the join game operation.
  */
@@ -23,20 +26,20 @@ public class JoinGameService {
      */
     public JoinGameResult Execute(JoinGameRequest joinGameRequest, String authtoken){
         JoinGameResult joinGameResult = new JoinGameResult();
-        DatabaseManager db = new DatabaseManager();
-        try {
-            AuthtokenDAO authtokenDAO = new AuthtokenDAO(db.getConnection());
-            GameDAO gameDAO = new GameDAO(db.getConnection());
+        //DatabaseManager db = new DatabaseManager();
+        try (Connection conn = DatabaseManager.getConnection()) {
+            AuthtokenDAO authtokenDAO = new AuthtokenDAO(conn);
+            GameDAO gameDAO = new GameDAO(conn);
             if (authtokenDAO.Find(authtoken) == null) {
                 joinGameResult.setSuccess(false);
                 joinGameResult.setMessage("Error: Unauthorized.");
-                db.closeConnection(db.getConnection());
+                //db.closeConnection(db.getConnection());
                 return joinGameResult;
             }
             if (gameDAO.Find(String.valueOf(joinGameRequest.getGameID())) == null) {
                 joinGameResult.setSuccess(false);
                 joinGameResult.setMessage("Error: Bad request.");
-                db.closeConnection(db.getConnection());
+                //db.closeConnection(db.getConnection());
                 return joinGameResult;
             }
             if (joinGameRequest.getPlayerColor() != null) {
@@ -44,14 +47,14 @@ public class JoinGameService {
                 if (!claimedSpot) {
                     joinGameResult.setSuccess(false);
                     joinGameResult.setMessage("Error: Already taken.");
-                    db.closeConnection(db.getConnection());
+                    //db.closeConnection(db.getConnection());
                     return joinGameResult;
                 }
             }
-            db.closeConnection(db.getConnection());
+            //db.closeConnection(db.getConnection());
             joinGameResult.setSuccess(true);
             joinGameResult.setMessage("Joined game successfully.");
-        } catch (DataAccessException e) {
+        } catch (DataAccessException | SQLException e) {
             e.printStackTrace();
             joinGameResult.setMessage("Error in joining game.");
         }

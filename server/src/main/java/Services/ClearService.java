@@ -7,6 +7,9 @@ import Results.ClearResult;
 import dataAccess.DataAccessException;
 import dataAccess.DatabaseManager;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 /**
  * A service to handle the logic for the clear operation.
  */
@@ -17,19 +20,18 @@ public class ClearService {
      */
     public ClearResult Execute() {
         ClearResult clearResult = new ClearResult();
-        DatabaseManager db = new DatabaseManager();
-        try {
-            AuthtokenDAO authtokenDAO = new AuthtokenDAO(db.getConnection());
-            GameDAO gameDAO = new GameDAO(db.getConnection());
-            UserDAO userDAO = new UserDAO(db.getConnection());
+        //DatabaseManager db = new DatabaseManager();
+        try (Connection conn = DatabaseManager.getConnection()) {
+            AuthtokenDAO authtokenDAO = new AuthtokenDAO(conn);
+            GameDAO gameDAO = new GameDAO(conn);
+            UserDAO userDAO = new UserDAO(conn);
             authtokenDAO.clear();
             gameDAO.clear();
             userDAO.clear();
-            db.closeConnection(db.getConnection());
             clearResult.setSuccess(true);
             clearResult.setMessage("Clear succeeded.");
         }
-        catch (DataAccessException e) {
+        catch (DataAccessException | SQLException e) {
             e.printStackTrace();
             clearResult.setSuccess(false);
             clearResult.setMessage("Error occured while trying to clear the database.");

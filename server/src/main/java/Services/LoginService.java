@@ -8,8 +8,10 @@ import Models.User;
 import Requests.LoginRequest;
 import Results.LoginResult;
 import dataAccess.DataAccessException;
-import dataAccess.Database;
+import dataAccess.DatabaseManager;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.UUID;
 
 /**
@@ -23,10 +25,10 @@ public class LoginService {
      */
     public LoginResult Execute(LoginRequest loginRequest){
         LoginResult loginResult = new LoginResult();
-        Database db = new Database();
-        try {
-            AuthtokenDAO authtokenDAO = new AuthtokenDAO(db.getConnection());
-            UserDAO userDAO = new UserDAO(db.getConnection());
+        //Database db = new Database();
+        try (Connection conn = DatabaseManager.getConnection()) {
+            AuthtokenDAO authtokenDAO = new AuthtokenDAO(conn);
+            UserDAO userDAO = new UserDAO(conn);
             User user = userDAO.Find(loginRequest.getUsername());
             if (user != null) {
                 if (user.getPassword().equals(loginRequest.getPassword())) {
@@ -41,14 +43,14 @@ public class LoginService {
                     loginResult.setSuccess(false);
                     loginResult.setMessage("Error: Incorrect password.");
                 }
-                db.closeConnection(db.getConnection());
+                //db.closeConnection(db.getConnection());
             }
             else {
-                db.closeConnection(db.getConnection());
+                //db.closeConnection(db.getConnection());
                 loginResult.setSuccess(false);
                 loginResult.setMessage("Error: User not found in the database.");
             }
-        } catch (DataAccessException e) {
+        } catch (DataAccessException | SQLException e) {
             e.printStackTrace();
             loginResult.setSuccess(false);
             loginResult.setMessage("Error in login.");

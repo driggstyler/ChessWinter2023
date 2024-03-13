@@ -2,7 +2,7 @@ package DAO;
 
 import Models.Authtoken;
 import dataAccess.DataAccessException;
-import dataAccess.Database;
+import dataAccess.DatabaseManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
