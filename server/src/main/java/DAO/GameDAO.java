@@ -50,7 +50,7 @@ public class GameDAO {
             game.setWhiteUsername(username);
             Gson gson = new Gson();
             String json = gson.toJson(game);
-            String sql = "UPDATE games SET game = ? WHERE id = ?";
+            String sql = "UPDATE games SET game = ? WHERE gameID = ?";
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, json);
                 stmt.setInt(2, gameID);
@@ -66,7 +66,7 @@ public class GameDAO {
             game.setBlackUsername(username);
             Gson gson = new Gson();
             String json = gson.toJson(game);
-            String sql = "UPDATE games SET game = ? WHERE id = ?";
+            String sql = "UPDATE games SET game = ? WHERE gameID = ?";
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, json);
                 stmt.setInt(2, gameID);

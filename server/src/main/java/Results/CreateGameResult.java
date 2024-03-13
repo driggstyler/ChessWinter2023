@@ -1,7 +1,7 @@
 package Results;
 
 public class CreateGameResult {
-    private int gameID;
+    private Integer gameID;
     private String message;
 
     public boolean isSuccess() {
