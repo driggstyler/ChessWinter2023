@@ -6,7 +6,7 @@ import chess.ChessGame;
 import java.util.ArrayList;
 
 public class ListGamesResult {
-    private ArrayList<Game> games;
+    private ArrayList<Game> games = new ArrayList<>();
     private String message;
     private boolean success;
 

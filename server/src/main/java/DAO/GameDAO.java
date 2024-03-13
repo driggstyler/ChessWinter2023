@@ -163,7 +163,7 @@ public class GameDAO {
                 games.add(game);
             }
             if (games.isEmpty()) {
-                return null;
+                return games;
             }
             return games;
         } catch (SQLException e) {
