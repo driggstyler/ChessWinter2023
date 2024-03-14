@@ -24,11 +24,11 @@ public class UserDAO {
         try {
             DatabaseManager.createDatabase();
             var createUserTable = """
-                    CREATE TABLE IF NOT EXISTS user  (
-                      `password` VARCHAR(255) NOT NULL,
-                      `username` VARCHAR(255) NOT NULL,
-                      `email` VARCHAR(255) NOT NULL)
-                    )""";
+                    CREATE TABLE IF NOT EXISTS`chessdatabase`.`user` (
+                       `password` VARCHAR(225) NOT NULL,
+                       `username` VARCHAR(225) NOT NULL,
+                       `email` VARCHAR(225) NOT NULL);
+                    """;
             try (var createTableStatement = conn.prepareStatement(createUserTable)) {
                 createTableStatement.executeUpdate();
             }

@@ -26,13 +26,13 @@ public class GameDAO {
         try {
             DatabaseManager.createDatabase();
             var createGameTable = """
-                    CREATE TABLE IF NOT EXISTS games  (
-                      `gameID` INT NOT NULL,
-                      `gameName` VARCHAR(255) NOT NULL,
-                      `game` JSON NULL DEFAULT NULL,
-                      PRIMARY KEY (`gameID`),
-                      UNIQUE INDEX `gameID_UNIQUE` (`gameID` ASC) VISIBLE)
-                    )""";
+                    CREATE TABLE IF NOT EXISTS`chessdatabase`.`game` (
+                         `gameID` INT NOT NULL,
+                         `gameName` VARCHAR(225) NOT NULL,
+                         `game` JSON NULL,
+                         PRIMARY KEY (`gameID`),
+                         UNIQUE INDEX `authtoken_UNIQUE` (`gameID` ASC) VISIBLE);
+                    """;
             try (var createTableStatement = conn.prepareStatement(createGameTable)) {
                 createTableStatement.executeUpdate();
             }

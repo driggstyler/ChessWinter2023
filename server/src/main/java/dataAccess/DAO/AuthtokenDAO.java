@@ -23,12 +23,12 @@ public class AuthtokenDAO {
         try {
             DatabaseManager.createDatabase();
             var createAuthtokenTable = """
-                    CREATE TABLE IF NOT EXISTS authentication (
-                        `authtoken` VARCHAR(255) NOT NULL,
-                        `username` VARCHAR(255) NOT NULL,
-                        PRIMARY KEY (`authtoken`),
-                        UNIQUE INDEX `authtoken_UNIQUE` (`authtoken` ASC) VISIBLE
-                    )""";
+                    CREATE TABLE IF NOT EXISTS `chessdatabase`.`authentication` (
+                         `authtoken` VARCHAR(225) NOT NULL,
+                         `username` VARCHAR(225) NOT NULL,
+                         PRIMARY KEY (`authtoken`),
+                         UNIQUE INDEX `authtoken_UNIQUE` (`authtoken` ASC) VISIBLE);
+                    """;
             try (var createTableStatement = conn.prepareStatement(createAuthtokenTable)) {
                 createTableStatement.executeUpdate();
             }
