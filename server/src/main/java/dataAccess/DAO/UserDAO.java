@@ -24,7 +24,7 @@ public class UserDAO {
         try {
             DatabaseManager.createDatabase();
             var createUserTable = """
-                    CREATE TABLE IF NOT EXISTS`chessdatabase`.`user` (
+                    CREATE TABLE IF NOT EXISTS user  (
                       `password` VARCHAR(255) NOT NULL,
                       `username` VARCHAR(255) NOT NULL,
                       `email` VARCHAR(255) NOT NULL)

@@ -26,7 +26,7 @@ public class GameDAO {
         try {
             DatabaseManager.createDatabase();
             var createGameTable = """
-                    CREATE TABLE IF NOT EXISTS`chessdatabase`.`games` (
+                    CREATE TABLE IF NOT EXISTS games  (
                       `gameID` INT NOT NULL,
                       `gameName` VARCHAR(255) NOT NULL,
                       `game` JSON NULL DEFAULT NULL,
