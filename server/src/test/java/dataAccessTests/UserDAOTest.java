@@ -1,9 +1,7 @@
-package DataAccessTests;
+package dataAccessTests;
 
-import Models.Authtoken;
 import Models.User;
 import Services.ClearService;
-import dataAccess.DAO.AuthtokenDAO;
 import dataAccess.DAO.UserDAO;
 import dataAccess.DataAccessException;
 import dataAccess.DatabaseManager;
