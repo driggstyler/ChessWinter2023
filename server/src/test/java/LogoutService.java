@@ -11,7 +11,7 @@ import org.junit.jupiter.api.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class LogoutServiceTest {
+public class LogoutServiceTest{
     @BeforeEach
     public void setup() {
         try (Connection conn = DatabaseManager.getConnection()) {
