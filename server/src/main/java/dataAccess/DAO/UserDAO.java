@@ -3,6 +3,7 @@ package dataAccess.DAO;
 import Models.User;
 import dataAccess.DataAccessException;
 import dataAccess.DatabaseManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -47,7 +48,7 @@ public class UserDAO {
         String sql = "INSERT INTO user (username, password, email) VALUES(?,?,?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, user.getUsername());
-            stmt.setString(2, user.getPassword());
+            stmt.setString(2, storeUserPassword(user.getPassword()));
             stmt.setString(3, user.getEmail());
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -114,4 +115,14 @@ public class UserDAO {
             throw new DataAccessException("Error encountered while clearing the user table.");
         }
     }
+    String storeUserPassword(String password) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String hashedPassword = encoder.encode(password);
+        return hashedPassword;
+    }
+    public boolean verifyUser(String hashedPassword, String providedClearTextPassword) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.matches(providedClearTextPassword, hashedPassword);
+    }
+
 }

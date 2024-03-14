@@ -30,7 +30,7 @@ public class LoginService {
             UserDAO userDAO = new UserDAO(conn);
             User user = userDAO.Find(loginRequest.getUsername());
             if (user != null) {
-                if (user.getPassword().equals(loginRequest.getPassword())) {
+                if (userDAO.verifyUser(user.getPassword(), loginRequest.getPassword())) {
                     String authtoken = UUID.randomUUID().toString();
                     authtokenDAO.Insert(new Authtoken(authtoken, loginRequest.getUsername()));
                     loginResult.setUsername(loginRequest.getUsername());
