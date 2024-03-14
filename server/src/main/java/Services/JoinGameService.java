@@ -1,12 +1,9 @@
 package Services;
 
-import DAO.AuthtokenDAO;
-import DAO.GameDAO;
-import DAO.UserDAO;
-import Models.User;
+import dataAccess.DAO.AuthtokenDAO;
+import dataAccess.DAO.GameDAO;
 import Requests.JoinGameRequest;
 import Results.JoinGameResult;
-import chess.ChessGame;
 import dataAccess.DataAccessException;
 //import dataAccess.Database;
 import dataAccess.DatabaseManager;

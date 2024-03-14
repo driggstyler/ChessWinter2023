@@ -1,7 +1,8 @@
-package DAO;
+package dataAccess.DAO;
 
 import Models.User;
 import dataAccess.DataAccessException;
+import dataAccess.DatabaseManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,6 +20,21 @@ public class UserDAO {
 
     public UserDAO(Connection conn) {
         this.conn = conn;
+        try {
+            DatabaseManager.createDatabase();
+            var createUserTable = """
+                    CREATE TABLE IF NOT EXISTS`chessdatabase`.`user` (
+                      `password` VARCHAR(255) NOT NULL,
+                      `username` VARCHAR(255) NOT NULL,
+                      `email` VARCHAR(255) NOT NULL)
+                    )""";
+            try (var createTableStatement = conn.prepareStatement(createUserTable)) {
+                createTableStatement.executeUpdate();
+            }
+        }
+        catch (DataAccessException | SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -1,4 +1,4 @@
-package DAO;
+package dataAccess.DAO;
 
 import Models.Authtoken;
 import Models.Game;
@@ -6,6 +6,7 @@ import chess.ChessGame;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dataAccess.DataAccessException;
+import dataAccess.DatabaseManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,6 +23,23 @@ public class GameDAO {
 
     public GameDAO(Connection conn) {
         this.conn = conn;
+        try {
+            DatabaseManager.createDatabase();
+            var createGameTable = """
+                    CREATE TABLE IF NOT EXISTS`chessdatabase`.`games` (
+                      `gameID` INT NOT NULL,
+                      `gameName` VARCHAR(255) NOT NULL,
+                      `game` JSON NULL DEFAULT NULL,
+                      PRIMARY KEY (`gameID`),
+                      UNIQUE INDEX `gameID_UNIQUE` (`gameID` ASC) VISIBLE)
+                    )""";
+            try (var createTableStatement = conn.prepareStatement(createGameTable)) {
+                createTableStatement.executeUpdate();
+            }
+        }
+        catch (DataAccessException | SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     //    public Map<String, ChessGame> getDatabase() {

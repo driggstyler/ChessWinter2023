@@ -1,4 +1,4 @@
-package DAO;
+package dataAccess.DAO;
 
 import Models.Game;
 import chess.ChessGame;

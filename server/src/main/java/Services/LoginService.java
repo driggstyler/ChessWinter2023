@@ -1,8 +1,7 @@
 package Services;
 
-import DAO.AuthtokenDAO;
-import DAO.GameDAO;
-import DAO.UserDAO;
+import dataAccess.DAO.AuthtokenDAO;
+import dataAccess.DAO.UserDAO;
 import Models.Authtoken;
 import Models.User;
 import Requests.LoginRequest;

@@ -1,4 +1,4 @@
-package DAO;
+package dataAccess.DAO;
 
 import Models.Authtoken;
 import dataAccess.DataAccessException;
@@ -20,6 +20,22 @@ public class AuthtokenDAO {
 
     public AuthtokenDAO(Connection conn) {
         this.conn = conn;
+        try {
+            DatabaseManager.createDatabase();
+            var createAuthtokenTable = """
+                    CREATE TABLE IF NOT EXISTS`chessdatabase`.`authentication` (
+                        authtoken` VARCHAR(255) NOT NULL,
+                        username` VARCHAR(255) NOT NULL,
+                        PRIMARY KEY (`authtoken`),
+                        UNIQUE INDEX `authtoken_UNIQUE` (`authtoken` ASC) VISIBLE
+                    )""";
+            try (var createTableStatement = conn.prepareStatement(createAuthtokenTable)) {
+                createTableStatement.executeUpdate();
+            }
+        }
+        catch (DataAccessException | SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

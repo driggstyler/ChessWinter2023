@@ -1,8 +1,6 @@
 package Services;
 
-import DAO.AuthtokenDAO;
-import DAO.GameDAO;
-import DAO.UserDAO;
+import dataAccess.DAO.AuthtokenDAO;
 import Results.LogoutResult;
 import dataAccess.DataAccessException;
 import dataAccess.DatabaseManager;
