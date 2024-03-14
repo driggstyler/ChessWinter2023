@@ -82,7 +82,6 @@ public class AuthtokenDAO {
             throw new DataAccessException("Error encountered while finding an authtoken int the database.");
         }
     }
-
     /**
      * Remove an authroken object matching the given authtoken string.
      * @param authtokenString The string of the authtoken to find.
