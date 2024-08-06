@@ -23,7 +23,7 @@ public class AuthtokenDAO {
         try {
             DatabaseManager.createDatabase();
             var createAuthtokenTable = """
-                    CREATE TABLE IF NOT EXISTS `chessdatabase`.`authentication` (
+                    CREATE TABLE IF NOT EXISTS `authentication` (
                          `authtoken` VARCHAR(225) NOT NULL,
                          `username` VARCHAR(225) NOT NULL,
                          PRIMARY KEY (`authtoken`),

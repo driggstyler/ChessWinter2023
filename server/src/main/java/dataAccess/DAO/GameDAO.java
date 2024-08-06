@@ -26,7 +26,7 @@ public class GameDAO {
         try {
             DatabaseManager.createDatabase();
             var createGameTable = """
-                    CREATE TABLE IF NOT EXISTS`chessdatabase`.`game` (
+                    CREATE TABLE IF NOT EXISTS `game` (
                          `gameID` INT NOT NULL,
                          `gameName` VARCHAR(225) NOT NULL,
                          `game` JSON NULL,
@@ -68,7 +68,7 @@ public class GameDAO {
             game.setWhiteUsername(username);
             Gson gson = new Gson();
             String json = gson.toJson(game);
-            String sql = "UPDATE games SET game = ? WHERE gameID = ?";
+            String sql = "UPDATE game SET game = ? WHERE gameID = ?";
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, json);
                 stmt.setInt(2, gameID);
@@ -84,7 +84,7 @@ public class GameDAO {
             game.setBlackUsername(username);
             Gson gson = new Gson();
             String json = gson.toJson(game);
-            String sql = "UPDATE games SET game = ? WHERE gameID = ?";
+            String sql = "UPDATE game SET game = ? WHERE gameID = ?";
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, json);
                 stmt.setInt(2, gameID);
@@ -110,7 +110,7 @@ public class GameDAO {
         game.setGameName(gameName);
         game.setGameID(gameID);
         //        database.put(gameID, game);
-        String sql = "INSERT INTO games (gameID, gameName, game) VALUES(?,?,?)";
+        String sql = "INSERT INTO game (gameID, gameName, game) VALUES(?,?,?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             Gson gson = new Gson();
             String json = gson.toJson(game);
@@ -135,7 +135,7 @@ public class GameDAO {
         //return database.get(gameID);
         Game game;
         ResultSet rs;
-        String sql = "SELECT * FROM games WHERE gameID = ?;";
+        String sql = "SELECT * FROM game WHERE gameID = ?;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, gameID);
             rs = stmt.executeQuery();
@@ -168,7 +168,7 @@ public class GameDAO {
         //        return games;
         ArrayList<Game> games = new ArrayList<>();
         ResultSet rs;
-        String sql = "SELECT game FROM games;";
+        String sql = "SELECT game FROM game;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             rs = stmt.executeQuery();
             int i = 0;
@@ -198,7 +198,7 @@ public class GameDAO {
      */
     public void clear() throws DataAccessException {
         //database.clear();
-        String sql = "DELETE FROM games";
+        String sql = "DELETE FROM game";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.executeUpdate();
         } catch (SQLException e) {

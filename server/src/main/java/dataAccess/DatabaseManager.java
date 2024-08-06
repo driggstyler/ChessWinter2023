@@ -60,6 +60,7 @@ public class DatabaseManager {
      */
     static public Connection getConnection() throws DataAccessException {
         try {
+            createDatabase();
             var conn = DriverManager.getConnection(connectionUrl, user, password);
             conn.setCatalog(databaseName);
             return conn;
