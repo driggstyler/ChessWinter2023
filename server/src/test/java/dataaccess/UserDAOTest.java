@@ -1,4 +1,4 @@
-package dataAccessTests;
+package dataaccess;
 
 import Models.User;
 import Services.ClearService;

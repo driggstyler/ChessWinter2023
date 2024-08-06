@@ -1,4 +1,4 @@
-package dataAccessTests;
+package dataaccess;
 
 import Models.Game;
 import Models.User;
